@@ -153,7 +153,7 @@ const FoundItemsPost = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-100 to-green-300 p-6">
+        <div className="min-h-screen bg-gradient-to-br p-6">
             <h2 className="text-3xl font-semibold text-center text-green-800 mb-6">
                 Found Items
             </h2>

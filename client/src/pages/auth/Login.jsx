@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { axiosPublic } from '../../utils/axiosInstance';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,7 +26,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/login", formData);
+            const response = await axiosPublic.post("http://localhost:5000/api/auth/login", formData);
             const result = response.data;
 
             if (result.token) {

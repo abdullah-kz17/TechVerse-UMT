@@ -7,7 +7,7 @@ import Footer from "./components/layout/Footer";
 import Loader from "./components/common/Loader.jsx";
 import CreatePost from "./pages/post/CreatePost.jsx";
 import EditPost from "./pages/post/EditPost.jsx";
-import LostPostItems from "./pages/post/LostItemsPosts.jsx";
+import LostItems from "./pages/post/LostItems.jsx";
 import FoundItemsPost from "./pages/post/FoundItemsPost.jsx";
 import AdminDashboardLayout from "./pages/admin/DashboardLayout.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
@@ -62,8 +62,8 @@ function App() {
                                     <Route path="/reset-password/:token" element={<ResetPassword />} />
                                     <Route path="*" element={<NotFound />} />
                                     <Route path="/posts/:id" element={<PostDetails />} />
-                                    <Route path="/lost-items-post" element={<LostPostItems />} />
-                                    <Route path="/found-items-post" element={<FoundItemsPost />} />
+                                    <Route path="/lost-items" element={<LostItems />} />
+                                    <Route path="/found-items" element={<FoundItemsPost />} />
                                     <Route path="/claim/:postId" element={<ClaimRequest />} />
 
                                     {/* Authenticated User Routes */}
