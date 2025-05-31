@@ -22,11 +22,17 @@ postRoute.post('/create', protect, upload.single('imageUrl'), createPost);
 // Get all approved posts with filters
 postRoute.get('/all', getPosts);
 
+// Get posts by logged-in user
+postRoute.get('/my', protect, getMyPosts);
+
+// Admin: Get posts pending approval
+postRoute.get('/pending', protect, adminMiddleware, getPendingPosts);
+
 // Get single post by ID
 postRoute.get('/:id', getPostById);
 
 // Update post (owner or admin)
-postRoute.patch('/:id', protect, upload.single('image'), updatePost);
+postRoute.patch('/:id', protect, upload.single('imageUrl'), updatePost);
 
 // Delete/Archive post (owner or admin)
 postRoute.delete('/:id', protect, deletePost);
@@ -34,10 +40,5 @@ postRoute.delete('/:id', protect, deletePost);
 // Approve post (admin only)
 postRoute.patch('/approve/:id', protect, adminMiddleware, approvePost);
 
-// Get posts by logged-in user
-postRoute.get('/getposts', protect, getMyPosts);
-
-// Admin: Get posts pending approval
-postRoute.get('/pending', protect, adminMiddleware, getPendingPosts);
 
 module.exports = postRoute;

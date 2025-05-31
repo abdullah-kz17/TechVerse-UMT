@@ -41,21 +41,19 @@ const createPost = async (req, res) => {
 
 // GET FILTERED & APPROVED POSTS
 const getPosts = async (req, res) => {
-    console.log('api hit    ')
     try {
         const { type, category, location, date } = req.query;
 
-        // const filter = {
-        //   isApproved: true,
-        //   isArchived: false,
-        //   ...(type && { type }),
-        //   ...(category && { category }),
-        //   ...(location && { location }),
-        //   ...(date && { dateLostOrFound: { $gte: new Date(date) } }),
-        // };
+        const filter = {
+            isApproved: true,         // ✅ Only approved posts
+            ...(type && { type }),    // e.g., 'lost' or 'found'
+            ...(category && { category }),
+            ...(location && { location }),
+            ...(date && { dateLostOrFound: { $gte: new Date(date) } }),
+        };
 
-        const posts = await Post.find()
-            .populate('postedBy', 'name email')
+        const posts = await Post.find(filter)
+            .populate('postedBy', 'username email')
             .sort({ createdAt: -1 });
 
         res.json(posts);
@@ -65,14 +63,17 @@ const getPosts = async (req, res) => {
     }
 };
 
+
+
+
 // GET POST BY ID
 const getPostById = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id)
-            .populate('postedBy', 'name email')
+            .populate('postedBy', 'username email')
             .populate({
                 path: 'claims',
-                populate: { path: 'claimer', select: 'name email' },
+                populate: { path: 'claimer', select: 'username email' },
             });
 
         if (!post) return res.status(404).json({ message: 'Post not found' });
@@ -147,10 +148,11 @@ const approvePost = async (req, res) => {
     }
 };
 
+
 // GET MY POSTS
 const getMyPosts = async (req, res) => {
     try {
-        const posts = await Post.find({ postedBy: req.user._id, isArchived: false }).sort({ createdAt: -1 });
+        const posts = await Post.find({ postedBy: req.user._id }).sort({ createdAt: -1 });
         res.json(posts);
     } catch (error) {
         console.error('Get My Posts Error:', error);
@@ -161,8 +163,8 @@ const getMyPosts = async (req, res) => {
 // ADMIN: GET PENDING POSTS
 const getPendingPosts = async (req, res) => {
     try {
-        const posts = await Post.find({ isApproved: false, isArchived: false })
-            .populate('postedBy', 'name email')
+        const posts = await Post.find({ isApproved: false })
+            .populate('postedBy', 'username email')
             .sort({ createdAt: -1 });
 
         res.json(posts);

@@ -7,7 +7,6 @@ const {
 } = require('../Controllers/claimController.js');
 
 const protect  = require('../middlewares/authMiddleware.js');
-const adminMiddleware = require('../middlewares/adminMiddleware.js');
 
 const { upload } = require('../config/cloudinary.js');
 
@@ -21,7 +20,7 @@ claimRoute.post(
 );
 
 // Update claim status (only finder or admin)
-claimRoute.patch('/:id/status', protect, adminMiddleware,  updateClaimRequestStatus);
+claimRoute.patch('/:id/status', protect,  updateClaimRequestStatus);
 
 // Get my claim requests (claimer)
 claimRoute.get('/myrequests', protect, getMyClaimRequests);

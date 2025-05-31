@@ -12,7 +12,7 @@ export default function Profile() {
 
     return (
         <div className="max-w-4xl mx-auto mt-10 mb-8 px-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-10 flex flex-col md:flex-row items-center md:items-start gap-8">
+            <div className="bg-white  rounded-xl shadow-lg p-6 sm:p-10 flex flex-col md:flex-row items-center md:items-start gap-8">
 
                 {/* Avatar */}
                 <div className="flex-shrink-0">
@@ -25,15 +25,15 @@ export default function Profile() {
 
                 {/* Info */}
                 <div className="flex-grow w-full">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                    <h2 className="text-2xl font-bold text-gray-900  mb-1">
                         {user?.username}
                     </h2>
-                    <p className="text-gray-600 dark:text-gray-300 mb-1">{user?.email}</p>
+                    <p className="text-gray-600  mb-1">{user?.email}</p>
                     <span
                         className={`inline-block mt-1 px-3 py-1 text-sm rounded-full font-medium 
             ${user?.isAdmin
-                            ? 'bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400'
-                            : 'bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400'}`}
+                            ? 'bg-red-100 text-red-700 '
+                            : 'bg-blue-100 text-blue-700 '}`}
                     >
                    {user?.isAdmin ? 'Admin' : 'User'}
               </span>
@@ -41,7 +41,7 @@ export default function Profile() {
 
                     {/* Extra Info */}
                     {user?.lastLogin && (
-                        <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                        <p className="mt-4 text-sm text-gray-500 ">
                             Last login: {new Date(user.lastLogin).toLocaleString()}
                         </p>
                     )}

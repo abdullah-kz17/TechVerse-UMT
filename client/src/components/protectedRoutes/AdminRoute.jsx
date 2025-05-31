@@ -1,4 +1,4 @@
-
+import React from 'react'
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -9,7 +9,7 @@ const AdminRoute = ({ children }) => {
         return <div className="text-center py-10">Loading...</div>;
     }
 
-    return isLoggedIn && user?.isAdmin ? children : <Navigate to="/" />;
+    return isLoggedIn && user?.role === 'admin' ? children : <Navigate to="/" />;
 };
 
 export default AdminRoute;
