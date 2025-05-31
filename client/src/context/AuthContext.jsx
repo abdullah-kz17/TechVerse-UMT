@@ -73,6 +73,7 @@ export default function AuthProvider({ children }) {
             value={{
                 user,
                 token,
+                authenticationToken,
                 storeTokenInLS,
                 isLoggedIn,
                 loading,

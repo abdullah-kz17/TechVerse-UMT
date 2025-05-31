@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import {Link, NavLink, useNavigate} from 'react-router-dom';
 import {useAuth} from "../../context/AuthContext.jsx";
+import MessageNotification from '../chat/MessageNotification';
 
 const Header = () => {
     const {user,isLoggedIn} = useAuth();
@@ -160,6 +161,10 @@ const Header = () => {
                     >
                         {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </button>
+
+                    <div className="flex items-center gap-4">
+                        {isLoggedIn && <MessageNotification />}
+                    </div>
                 </div>
 
                 {/* Mobile Menu */}

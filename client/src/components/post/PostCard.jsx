@@ -1,8 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FiMapPin, FiCalendar, FiPhone, FiUser } from "react-icons/fi";
+import ChatButton from "../chat/ChatButton";
+import { useAuth } from "../../context/AuthContext";
 
 const PostCard = ({ post }) => {
+    const { user } = useAuth();
+    const isPostCreator = user?._id === post.postedBy?._id;
+
     return (
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-transform hover:scale-105">
             <img
@@ -51,6 +56,13 @@ const PostCard = ({ post }) => {
                         >
                             Claim
                         </Link>
+                    )}
+
+                    {post.postedBy && !isPostCreator && (
+                        <ChatButton 
+                            userId={post.postedBy._id} 
+                            username={post.postedBy.username}
+                        />
                     )}
                 </div>
             </div>
