@@ -18,6 +18,8 @@ import GetMyClaims from "./pages/userDashboard/userControls/GetMyClaims.jsx";
 import GetUserClaims from "./pages/userDashboard/userControls/GetUserClaims.jsx";
 import Chat from "./pages/chat/Chat.jsx";
 import Messages from "./pages/chat/Messages.jsx";
+import AuthProvider from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Lazy-loaded public pages
 const Home = lazy(() => import("./pages/Home"));
@@ -39,48 +41,54 @@ const MyPosts = lazy(() => import("./pages/userDashboard/userControls/UserPosts.
 function App() {
     return (
         <Router>
-            <div className="">
-                <Header />
-                <Suspense fallback={<div className=""><Loader /></div>}>
-                    <Routes>
-                        {/* Public Routes */}
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/forgot-password" element={<ForgetPassword />} />
-                        <Route path="/reset-password/:token" element={<ResetPassword />} />
-                        <Route path="*" element={<NotFound />} />
-                        <Route path="/posts/:id" element={<PostDetails />} />
-                        <Route path="/lost-items-post" element={<LostPostItems />} />
-                        <Route path="/found-items-post" element={<FoundItemsPost />} />
-                        <Route path="/claim/:postId" element={<ClaimRequest />} />
+            <AuthProvider>
+                <ThemeProvider>
+                    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+                        <Header />
+                        <main className="min-h-[calc(100vh-4rem)]">
+                            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader /></div>}>
+                                <Routes>
+                                    {/* Public Routes */}
+                                    <Route path="/" element={<Home />} />
+                                    <Route path="/login" element={<Login />} />
+                                    <Route path="/register" element={<Register />} />
+                                    <Route path="/forgot-password" element={<ForgetPassword />} />
+                                    <Route path="/reset-password/:token" element={<ResetPassword />} />
+                                    <Route path="*" element={<NotFound />} />
+                                    <Route path="/posts/:id" element={<PostDetails />} />
+                                    <Route path="/lost-items-post" element={<LostPostItems />} />
+                                    <Route path="/found-items-post" element={<FoundItemsPost />} />
+                                    <Route path="/claim/:postId" element={<ClaimRequest />} />
 
-                        {/* Authenticated User Routes */}
-                        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-                        <Route path="/create-post" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
-                        <Route path="/edit-post/:id" element={<PrivateRoute><EditPost /></PrivateRoute>} />
-                        <Route path="/chat/:userId" element={<PrivateRoute><Chat /></PrivateRoute>} />
-                        <Route path="/messages" element={<PrivateRoute><Messages /></PrivateRoute>} />
+                                    {/* Authenticated User Routes */}
+                                    <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+                                    <Route path="/create-post" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
+                                    <Route path="/edit-post/:id" element={<PrivateRoute><EditPost /></PrivateRoute>} />
+                                    <Route path="/chat/:userId" element={<PrivateRoute><Chat /></PrivateRoute>} />
+                                    <Route path="/messages" element={<PrivateRoute><Messages /></PrivateRoute>} />
 
-                        {/* User Dashboard */}
-                        <Route path="/dashboard" element={<PrivateRoute><DashboardLayout /></PrivateRoute>}>
-                            <Route index element={<UserDashboard />} />
-                            <Route path="my-posts" element={<MyPosts />} />
-                            <Route path="my-claims" element={<GetMyClaims />} />
-                            <Route path="user-claims" element={<GetUserClaims />} />
-                            {/*<Route path="profile" element={<DashboardProfile />} />*/}
-                        </Route>
+                                    {/* User Dashboard */}
+                                    <Route path="/dashboard" element={<PrivateRoute><DashboardLayout /></PrivateRoute>}>
+                                        <Route index element={<UserDashboard />} />
+                                        <Route path="my-posts" element={<MyPosts />} />
+                                        <Route path="my-claims" element={<GetMyClaims />} />
+                                        <Route path="user-claims" element={<GetUserClaims />} />
+                                        {/*<Route path="profile" element={<DashboardProfile />} />*/}
+                                    </Route>
 
-                        {/* Admin Dashboard */}
-                        <Route path="/admin-dashboard" element={<AdminRoute><AdminDashboardLayout /></AdminRoute>}>
-                            <Route index element={<AdminDashboard />} />
-                            <Route path="pending-posts" element={<PendingPosts />} />
-                            {/*<Route path="profile" element={<DashboardProfile />} />*/}
-                        </Route>
-                    </Routes>
-                </Suspense>
-                <Footer />
-            </div>
+                                    {/* Admin Dashboard */}
+                                    <Route path="/admin-dashboard" element={<AdminRoute><AdminDashboardLayout /></AdminRoute>}>
+                                        <Route index element={<AdminDashboard />} />
+                                        <Route path="pending-posts" element={<PendingPosts />} />
+                                        {/*<Route path="profile" element={<DashboardProfile />} />*/}
+                                    </Route>
+                                </Routes>
+                            </Suspense>
+                        </main>
+                        <Footer />
+                    </div>
+                </ThemeProvider>
+            </AuthProvider>
         </Router>
     );
 }

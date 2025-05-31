@@ -133,7 +133,7 @@ const Chat = () => {
         try {
             console.log('Sending message with token:', authenticationToken);
             // Send message to server
-            const response = await axios.post(
+            await axios.post(
                 'http://localhost:5000/api/chat/messages',
                 {
                     receiverId: userId,
@@ -185,7 +185,7 @@ const Chat = () => {
             )}
 
             {/* Messages Container */}
-            <div className="flex-1 p-4 overflow-y-auto">
+            <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
                 {isLoading ? (
                     <div className="flex justify-center items-center h-full">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -195,18 +195,30 @@ const Chat = () => {
                         {messages.map((message, index) => (
                             <div
                                 key={index}
-                                className={`flex ${message.sender === user._id ? 'justify-end' : 'justify-start'}`}
+                                className={`flex items-end gap-2 ${
+                                    message.sender === user._id ? 'flex-row-reverse' : 'flex-row'
+                                }`}
                             >
+                                {/* Avatar */}
+                                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                                    <span className="text-sm font-medium text-gray-600">
+                                        {message.sender === user._id 
+                                            ? user.name?.charAt(0).toUpperCase() 
+                                            : username?.charAt(0).toUpperCase()}
+                                    </span>
+                                </div>
+
+                                {/* Message Bubble */}
                                 <div
-                                    className={`max-w-[70%] rounded-lg p-3 ${
+                                    className={`max-w-[70%] rounded-2xl px-4 py-2 ${
                                         message.sender === user._id
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-200 text-gray-800'
+                                            ? 'bg-blue-500 text-white rounded-tr-none'
+                                            : 'bg-white text-gray-800 rounded-tl-none shadow-sm'
                                     }`}
                                 >
-                                    <p>{message.content}</p>
-                                    <p className="text-xs mt-1 opacity-70">
-                                        {new Date(message.createdAt).toLocaleTimeString()}
+                                    <p className="text-sm">{message.content}</p>
+                                    <p className={`text-xs mt-1 ${message.sender === user._id ? 'text-blue-100' : 'text-gray-500'}`}>
+                                        {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </p>
                                 </div>
                             </div>
@@ -217,19 +229,19 @@ const Chat = () => {
             </div>
 
             {/* Message Input */}
-            <form onSubmit={sendMessage} className="bg-white p-4 shadow-md">
+            <form onSubmit={sendMessage} className="bg-white p-4 shadow-lg border-t border-gray-100">
                 <div className="max-w-2xl mx-auto flex gap-2">
                     <input
                         type="text"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type a message..."
-                        className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:border-blue-500"
+                        className="flex-1 border border-gray-200 rounded-full px-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         disabled={isLoading}
                     />
                     <button
                         type="submit"
-                        className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition disabled:opacity-50"
+                        className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition disabled:opacity-50 disabled:hover:bg-blue-500"
                         disabled={isLoading || !newMessage.trim()}
                     >
                         <FiSend className="text-xl" />

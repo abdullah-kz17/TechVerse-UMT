@@ -73,7 +73,10 @@ const claimSlice = createSlice({
             .addCase(updateClaimStatus.fulfilled, (state, action) => {
                 state.loading = false;
                 state.successMessage = `Claim ${action.payload.status} successfully`;
-                state.postClaims = state.postClaims.map(claim =>
+                // Remove from postClaims (Claims on Your Posts)
+                state.postClaims = state.postClaims.filter(claim => claim._id !== action.payload._id);
+                // Update in myClaims (My Claim Requests)
+                state.myClaims = state.myClaims.map(claim =>
                     claim._id === action.payload._id ? action.payload : claim
                 );
             })

@@ -30,7 +30,7 @@ const io = socketIo(server, {
 // Socket.IO connection handling
 io.use((socket, next) => {
     const token = socket.handshake.auth.token;
-    
+
     if (!token) {
         return next(new Error('Authentication error'));
     }
