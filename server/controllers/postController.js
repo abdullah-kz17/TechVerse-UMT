@@ -90,11 +90,6 @@ const updatePost = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) return res.status(404).json({ message: 'Post not found' });
-
-        const isOwnerOrAdmin = post.postedBy.toString() === req.user._id || req.user.role === 'admin';
-        if (!isOwnerOrAdmin)
-            return res.status(403).json({ message: 'Unauthorized' });
-
         const updates = req.body;
         if (req.file?.path) updates.imageUrl = req.file.path;
 
@@ -113,7 +108,7 @@ const deletePost = async (req, res) => {
         const post = await Post.findById(req.params.id);
         if (!post) return res.status(404).json({ message: 'Post not found' });
 
-        const isOwnerOrAdmin = post.postedBy.toString() === req.user._id || req.user.role === 'admin';
+        const isOwnerOrAdmin = post.postedBy.toString() === req.user._id.toString() || req.user.role === 'admin';
 
         if (!isOwnerOrAdmin)
             return res.status(403).json({ message: 'Unauthorized' });

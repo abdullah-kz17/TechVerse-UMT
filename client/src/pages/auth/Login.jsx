@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Login() {
@@ -30,19 +31,34 @@ export default function Login() {
 
             if (result.token) {
                 storeTokenInLS(result.token);
-                toast.success("Login successful!");
+                toast.success("Login successful! Welcome back!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
                 navigate("/");
             }
 
             setFormData({ email: '', password: '' });
         } catch (error) {
             console.error("Login error:", error.response?.data || error.message);
-            toast.error(error.response?.data?.message || "Login failed");
+            toast.error(error.response?.data?.message || "Login failed. Please try again.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         }
     };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 px-4">
+            <ToastContainer />
             <div className="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-all">
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">
                     Login to Your Account
@@ -111,7 +127,7 @@ export default function Login() {
 
                 {/* Optional Footer */}
                 <p className="text-sm text-center mt-6 text-gray-600 dark:text-gray-400">
-                    Don’t have an account?{' '}
+                    Don't have an account?{' '}
                     <Link to="/register" className="text-blue-600 hover:underline dark:text-blue-400">
                         Register here
                     </Link>

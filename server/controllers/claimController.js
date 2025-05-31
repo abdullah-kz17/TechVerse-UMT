@@ -1,6 +1,6 @@
 const ClaimRequest = require('../Models/claimModel.js');
 const Post = require('../models/postModel.js');
-const User = require('../models/UserModel.js');
+const User = require('../models/userModel.js');
 const sendEmail = require('../config/sendEmail.js');
 
 // Create a new claim request for a found item

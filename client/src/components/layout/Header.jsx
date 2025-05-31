@@ -11,16 +11,23 @@ import {
     MapPin,
     Eye
 } from 'lucide-react';
-import {Link, NavLink, useNavigate} from 'react-router-dom';
+import {Link, NavLink, useNavigate, useLocation} from 'react-router-dom';
 import {useAuth} from "../../context/AuthContext.jsx";
 import MessageNotification from '../chat/MessageNotification';
 import ThemeToggle from '../common/ThemeToggle';
+import { useDispatch } from "react-redux";
+
+import { FiMenu, FiX, FiUser, FiLogOut, FiMessageSquare } from "react-icons/fi";
+import { useTheme } from "../../context/ThemeContext";
 
 const Header = () => {
     const {user, isLoggedIn, logout} = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dashboardLink = user?.role === 'admin' ? '/admin-dashboard' : '/dashboard';
     const navigate = useNavigate();
+    const location = useLocation();
+    const { isDarkMode, toggleTheme } = useTheme();
+    const dispatch = useDispatch();
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
     const closeMenu = () => setIsMenuOpen(false);
@@ -30,8 +37,19 @@ const Header = () => {
         closeMenu();
     };
 
+    const handleLogout = () => {
+        dispatch(logout());
+        setIsMenuOpen(false);
+    };
+
+    const isActive = (path) => location.pathname === path;
+
     return (
-        <header className="bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 transition-colors duration-200">
+        <header className={`sticky top-0 z-50 transition-all duration-300 ${
+            isDarkMode 
+                ? 'bg-gray-800 border-gray-700' 
+                : 'bg-white border-gray-200'
+        } border-b shadow-sm`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo Section */}
@@ -40,13 +58,19 @@ const Header = () => {
                             <Search className="w-5 h-5 text-white" />
                         </div>
                         <div className="hidden sm:block">
-                            <Link to='/' className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent transition-all duration-200">
+                            <Link to='/' className={`text-xl font-bold ${
+                                isDarkMode ? 'text-white' : 'text-gray-900'
+                            } bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent transition-all duration-200`}>
                                 UMT Lost & Found
                             </Link>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1 transition-colors duration-200">Campus Recovery Portal</p>
+                            <p className={`text-xs ${
+                                isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                            } -mt-1 transition-colors duration-200`}>Campus Recovery Portal</p>
                         </div>
                         <div className="sm:hidden">
-                            <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent transition-all duration-200">
+                            <h1 className={`text-lg font-bold ${
+                                isDarkMode ? 'text-white' : 'text-gray-900'
+                            } bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent transition-all duration-200`}>
                                 UMT L&F
                             </h1>
                         </div>
@@ -65,7 +89,9 @@ const Header = () => {
                             }
                         >
                             <MapPin className="w-4 h-4" />
-                            <span>Lost Items</span>
+                            <span className={`${
+                                isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                            }`}>Lost Items</span>
                         </NavLink>
 
                         <NavLink
@@ -79,7 +105,9 @@ const Header = () => {
                             }
                         >
                             <Eye className="w-4 h-4" />
-                            <span>Found Items</span>
+                            <span className={`${
+                                isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                            }`}>Found Items</span>
                         </NavLink>
 
                         {isLoggedIn && (
@@ -95,7 +123,9 @@ const Header = () => {
                                     }
                                 >
                                     <LayoutDashboard className="w-4 h-4" />
-                                    <span>Dashboard</span>
+                                    <span className={`${
+                                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                    }`}>Dashboard</span>
                                 </NavLink>
 
                                 <NavLink
@@ -109,7 +139,9 @@ const Header = () => {
                                     }
                                 >
                                     <Plus className="w-4 h-4" />
-                                    <span>Create Post</span>
+                                    <span className={`${
+                                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                    }`}>Create Post</span>
                                 </NavLink>
                             </>
                         )}
@@ -122,16 +154,22 @@ const Header = () => {
                             <>
                                 <button
                                     onClick={() => navigate('/profile')}
-                                    className="flex items-center space-x-2 px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all duration-200"
+                                    className={`flex items-center space-x-2 px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all duration-200 ${
+                                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                    }`}
                                 >
                                     <User className="w-4 h-4" />
-                                    <span className="text-sm font-medium hidden lg:block">
+                                    <span className={`text-sm font-medium hidden lg:block ${
+                                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                    }`}>
                                         {user?.name?.split(' ')[0] || 'Profile'}
                                     </span>
                                 </button>
                                 <button
-                                    onClick={logout}
-                                    className="flex items-center space-x-2 px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all duration-200"
+                                    onClick={handleLogout}
+                                    className={`flex items-center space-x-2 px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all duration-200 ${
+                                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                    }`}
                                     title="Logout"
                                 >
                                     <LogOut className="w-4 h-4" />
@@ -140,10 +178,14 @@ const Header = () => {
                         ) : (
                             <NavLink
                                 to="/login"
-                                className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 dark:hover:from-blue-600 dark:hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                                className={`flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 dark:hover:from-blue-600 dark:hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg ${
+                                    isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                                }`}
                             >
                                 <LogIn className="w-4 h-4" />
-                                <span className="text-sm font-medium">Sign In</span>
+                                <span className={`text-sm font-medium ${
+                                    isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                }`}>Sign In</span>
                             </NavLink>
                         )}
                     </div>
@@ -153,7 +195,9 @@ const Header = () => {
                         <ThemeToggle />
                         <button
                             onClick={toggleMenu}
-                            className="p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors duration-200"
+                            className={`p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors duration-200 ${
+                                isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                            }`}
                         >
                             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </button>
@@ -166,101 +210,127 @@ const Header = () => {
 
                 {/* Mobile Menu */}
                 {isMenuOpen && (
-                    <div className="md:hidden border-t border-gray-200 dark:border-gray-800 py-4 space-y-2 transition-colors duration-200">
-                        <NavLink
-                            to="/lost-items-post"
-                            onClick={closeMenu}
-                            className={({ isActive }) =>
-                                `flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                                    isActive
-                                        ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
-                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
-                                }`
-                            }
-                        >
-                            <MapPin className="w-4 h-4" />
-                            <span>Lost Items</span>
-                        </NavLink>
+                    <div className={`md:hidden transition-all duration-300 ${
+                        isDarkMode
+                            ? "bg-gray-800 border-t border-gray-700"
+                            : "bg-white border-t border-gray-200"
+                    }`}>
+                        <div className="px-2 pt-2 pb-3 space-y-1">
+                            <NavLink
+                                to="/lost-items-post"
+                                onClick={closeMenu}
+                                className={({ isActive }) =>
+                                    `flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                                        isActive
+                                            ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                    }`
+                                }
+                            >
+                                <MapPin className="w-4 h-4" />
+                                <span className={`${
+                                    isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                }`}>Lost Items</span>
+                            </NavLink>
 
-                        <NavLink
-                            to="/found-items-post"
-                            onClick={closeMenu}
-                            className={({ isActive }) =>
-                                `flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                                    isActive
-                                        ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
-                                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
-                                }`
-                            }
-                        >
-                            <Eye className="w-4 h-4" />
-                            <span>Found Items</span>
-                        </NavLink>
+                            <NavLink
+                                to="/found-items-post"
+                                onClick={closeMenu}
+                                className={({ isActive }) =>
+                                    `flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                                        isActive
+                                            ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                    }`
+                                }
+                            >
+                                <Eye className="w-4 h-4" />
+                                <span className={`${
+                                    isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                }`}>Found Items</span>
+                            </NavLink>
 
-                        {isLoggedIn && (
-                            <>
-                                <NavLink
-                                    to={dashboardLink}
-                                    onClick={closeMenu}
-                                    className={({ isActive }) =>
-                                        `flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                                            isActive
-                                                ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
-                                                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
-                                        }`
-                                    }
-                                >
-                                    <LayoutDashboard className="w-4 h-4" />
-                                    <span>Dashboard</span>
-                                </NavLink>
+                            {isLoggedIn && (
+                                <>
+                                    <NavLink
+                                        to={dashboardLink}
+                                        onClick={closeMenu}
+                                        className={({ isActive }) =>
+                                            `flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                                                isActive
+                                                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                            }`
+                                        }
+                                    >
+                                        <LayoutDashboard className="w-4 h-4" />
+                                        <span className={`${
+                                            isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                        }`}>Dashboard</span>
+                                    </NavLink>
 
-                                <NavLink
-                                    to="/create-post"
-                                    onClick={closeMenu}
-                                    className={({ isActive }) =>
-                                        `flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                                            isActive
-                                                ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
-                                                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
-                                        }`
-                                    }
-                                >
-                                    <Plus className="w-4 h-4" />
-                                    <span>Create Post</span>
-                                </NavLink>
+                                    <NavLink
+                                        to="/create-post"
+                                        onClick={closeMenu}
+                                        className={({ isActive }) =>
+                                            `flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                                                isActive
+                                                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                            }`
+                                        }
+                                    >
+                                        <Plus className="w-4 h-4" />
+                                        <span className={`${
+                                            isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                        }`}>Create Post</span>
+                                    </NavLink>
 
+                                    <div className="border-t border-gray-200 dark:border-gray-800 pt-2 mt-2">
+                                        <button
+                                            onClick={() => handleNavigation('/profile')}
+                                            className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 w-full transition-all duration-200 ${
+                                                isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                            }`}
+                                        >
+                                            <User className="w-4 h-4" />
+                                            <span className={`${
+                                                isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                            }`}>Profile ({user?.name})</span>
+                                        </button>
+
+                                        <button
+                                            onClick={handleLogout}
+                                            className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 w-full transition-all duration-200 ${
+                                                isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                            }`}
+                                        >
+                                            <LogOut className="w-4 h-4" />
+                                            <span className={`${
+                                                isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                            }`}>Logout</span>
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+
+                            {!isLoggedIn && (
                                 <div className="border-t border-gray-200 dark:border-gray-800 pt-2 mt-2">
-                                    <button
-                                        onClick={() => handleNavigation('/profile')}
-                                        className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 w-full transition-all duration-200"
+                                    <NavLink
+                                        to="/login"
+                                        onClick={closeMenu}
+                                        className={`flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg ${
+                                            isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                                        }`}
                                     >
-                                        <User className="w-4 h-4" />
-                                        <span>Profile ({user?.name})</span>
-                                    </button>
-
-                                    <button
-                                        onClick={logout}
-                                        className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 w-full transition-all duration-200"
-                                    >
-                                        <LogOut className="w-4 h-4" />
-                                        <span>Logout</span>
-                                    </button>
+                                        <LogIn className="w-4 h-4" />
+                                        <span className={`${
+                                            isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                        }`}>Sign In</span>
+                                    </NavLink>
                                 </div>
-                            </>
-                        )}
-
-                        {!isLoggedIn && (
-                            <div className="border-t border-gray-200 dark:border-gray-800 pt-2 mt-2">
-                                <NavLink
-                                    to="/login"
-                                    onClick={closeMenu}
-                                    className="flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg"
-                                >
-                                    <LogIn className="w-4 h-4" />
-                                    <span>Sign In</span>
-                                </NavLink>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 )}
             </div>

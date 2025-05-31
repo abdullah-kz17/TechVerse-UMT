@@ -43,10 +43,16 @@ function App() {
         <Router>
             <AuthProvider>
                 <ThemeProvider>
-                    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-gray-800 transition-all duration-300">
                         <Header />
                         <main className="min-h-[calc(100vh-4rem)]">
-                            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader /></div>}>
+                            <Suspense fallback={
+                                <div className="min-h-screen flex items-center justify-center">
+                                    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-8 shadow-xl">
+                                        <Loader />
+                                    </div>
+                                </div>
+                            }>
                                 <Routes>
                                     {/* Public Routes */}
                                     <Route path="/" element={<Home />} />

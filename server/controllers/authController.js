@@ -294,4 +294,4 @@ const updateProfile = async (req, res) => {
 };
 
 
-module.exports = {register,login,getCurrentUser,forgotPassword,resetPassword,updateProfile}
+module.exports = { register, login, getCurrentUser, forgotPassword, resetPassword, updateProfile }

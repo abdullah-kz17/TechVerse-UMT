@@ -46,7 +46,7 @@ export const getPostById = createAsyncThunk('posts/getPostById', async (id, { re
 // Update Post
 export const updatePost = createAsyncThunk('posts/updatePost', async ({ postId, updatedData }, { rejectWithValue }) => {
     try {
-        const res = await axiosPrivate.put(`/post/${postId}`, updatedData, {
+        const res = await axiosPrivate.patch(`/post/${postId}`, updatedData, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
         return res.data;

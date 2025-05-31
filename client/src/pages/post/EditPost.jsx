@@ -12,7 +12,7 @@ const EditPost = () => {
     const navigate = useNavigate();
     const { id } = useParams(); // Get postId from URL
 
-    const { posts, loading, error } = useSelector((state) => state.post);
+    const { selectedPost, loading, error } = useSelector((state) => state.post);
     const [image, setImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
     const [formData, setFormData] = useState({
@@ -29,21 +29,21 @@ const EditPost = () => {
         dispatch(getPostById(id));
     }, [dispatch, id]);
 
-    useEffect(() => {
-        const post = posts.find((p) => p._id === id);
-        if (post) {
-            setFormData({
-                name: post.name,
-                category: post.category,
-                type: post.type,
-                description: post.description,
-                location: post.location,
-                dateLostOrFound: post.dateLostOrFound?.substring(0, 10),
-                contactInfo: post.contactInfo,
-            });
-            setPreviewUrl(post.imageUrl);
-        }
-    }, [posts, id]);
+   useEffect(() => {
+    if (selectedPost && selectedPost._id === id) {
+        setFormData({
+            name: selectedPost.name || "",
+            category: selectedPost.category || "",
+            type: selectedPost.type || "",
+            description: selectedPost.description || "",
+            location: selectedPost.location || "",
+            dateLostOrFound: selectedPost.dateLostOrFound?.substring(0, 10) || "",
+            contactInfo: selectedPost.postedBy.email || "",
+        });
+        setPreviewUrl(selectedPost.imageUrl);
+    }
+}, [selectedPost, id]);
+
 
     useEffect(() => {
         if (error) toast.error(error);

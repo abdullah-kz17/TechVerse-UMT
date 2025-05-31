@@ -133,7 +133,7 @@ const Chat = () => {
         try {
             console.log('Sending message with token:', authenticationToken);
             // Send message to server
-            await axios.post(
+            const response = await axios.post(
                 'http://localhost:5000/api/chat/messages',
                 {
                     receiverId: userId,
@@ -146,12 +146,19 @@ const Chat = () => {
                 }
             );
 
+            // Add the message to state using the server response
+            setMessages(prev => [...prev, response.data]);
+
             // Emit message through socket
             socket.emit('private_message', {
                 senderId: user._id,
                 receiverId: userId,
                 content: newMessage,
-                createdAt: new Date()
+                createdAt: new Date(),
+                sender: {
+                    _id: user._id,
+                    username: user.username
+                }
             });
 
             setNewMessage('');
@@ -200,7 +207,7 @@ const Chat = () => {
                                 }`}
                             >
                                 {/* Avatar */}
-                                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                                <div >
                                     <span className="text-sm font-medium text-gray-600">
                                         {message.sender === user._id 
                                             ? user.name?.charAt(0).toUpperCase() 
@@ -216,6 +223,11 @@ const Chat = () => {
                                             : 'bg-white text-gray-800 rounded-tl-none shadow-sm'
                                     }`}
                                 >
+                                    <p className="text-sm font-medium mb-1">
+                                        {message.sender === user._id 
+                                            ? user.username 
+                                            : message.sender?.username || username}
+                                    </p>
                                     <p className="text-sm">{message.content}</p>
                                     <p className={`text-xs mt-1 ${message.sender === user._id ? 'text-blue-100' : 'text-gray-500'}`}>
                                         {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

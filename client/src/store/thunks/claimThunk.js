@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {axiosPrivate} from "../../utils/axiosInstance.js";
+import { axiosPrivate } from "../../utils/axiosInstance.js";
 
 // Create a new claim request
 export const createClaimRequest = createAsyncThunk(

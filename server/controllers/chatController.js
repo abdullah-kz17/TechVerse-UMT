@@ -12,9 +12,9 @@ const getMessages = asyncHandler(async (req, res) => {
             { sender: userId, receiver: currentUserId }
         ]
     })
-    .populate('sender', 'name email profilePicture')
-    .populate('receiver', 'name email profilePicture')
-    .sort({ createdAt: 1 });
+        .populate('sender', 'name email profilePicture')
+        .populate('receiver', 'name email profilePicture')
+        .sort({ createdAt: 1 });
 
     // Mark messages as read
     await Message.updateMany(

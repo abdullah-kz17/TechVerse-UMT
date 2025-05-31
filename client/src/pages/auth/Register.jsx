@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Register() {
@@ -31,19 +32,34 @@ export default function Register() {
 
             if (result.token) {
                 storeTokenInLS(result.token);
-                toast.success("Registration successful!");
+                toast.success("Registration successful! Please login to continue.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
                 navigate('/login');
             }
 
             setFormData({ username: '', email: '', password: '' });
         } catch (error) {
             console.error("Registration error:", error.response?.data || error.message);
-            toast.error(error.response?.data?.message || "Registration failed");
+            toast.error(error.response?.data?.message || "Registration failed. Please try again.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         }
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
+            <ToastContainer />
             <div className="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md">
                 <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
                     Create an Account
