@@ -38,24 +38,6 @@ export default function Profile() {
                    {user?.isAdmin ? 'Admin' : 'User'}
               </span>
 
-
-                    {/* Extra Info */}
-                    {user?.lastLogin && (
-                        <p className="mt-4 text-sm text-gray-500 ">
-                            Last login: {new Date(user.lastLogin).toLocaleString()}
-                        </p>
-                    )}
-
-                    {/* Action Button */}
-                    <div className="mt-6">
-                        <button
-
-                            onClick={handleUpdateProfile}
-                            className="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                        >
-                            Update Profile
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
