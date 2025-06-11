@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { axiosPublic } from '../utils/axiosInstance';
+import { axiosPublic } from '../../utils/axiosInstance.js';
 import { toast } from 'react-toastify';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
