@@ -73,9 +73,14 @@ const claimSlice = createSlice({
             .addCase(updateClaimStatus.fulfilled, (state, action) => {
                 state.loading = false;
                 state.successMessage = `Claim ${action.payload.status} successfully`;
-                state.postClaims = state.postClaims.map(claim =>
-                    claim._id === action.payload._id ? action.payload : claim
-                );
+
+                if (action.payload.status === 'approved') {
+                    state.postClaims = state.postClaims.filter(claim => claim._id !== action.payload._id);
+                } else {
+                    state.postClaims = state.postClaims.map(claim =>
+                        claim._id === action.payload._id ? action.payload : claim
+                    );
+                }
             })
             .addCase(updateClaimStatus.rejected, (state, action) => {
                 state.loading = false;

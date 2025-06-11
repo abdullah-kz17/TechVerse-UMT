@@ -47,7 +47,7 @@ const Header = () => {
                         </div>
                         <div className="hidden sm:block">
                             <Link to='/' className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                                UMT Lost & Found
+                                Lost & Found
                             </Link>
                             <p className="text-xs text-gray-500 -mt-1">Campus Recovery Portal</p>
                         </div>
@@ -148,7 +148,7 @@ const Header = () => {
                                 className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg"
                             >
                                 <LogIn className="w-4 h-4" />
-                                <span className="text-sm font-medium">Sign In</span>
+                                <span className="text-sm font-medium text-white">Sign In</span>
                             </NavLink>
                         )}
                     </div>
@@ -254,7 +254,7 @@ const Header = () => {
                                     onClick={closeMenu}
                                     className="flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 shadow-md"
                                 >
-                                    <LogIn className="w-4 h-4" />
+                                    <LogIn className="w-4 h-4 text-white" />
                                     <span>Sign In</span>
                                 </NavLink>
                             </div>

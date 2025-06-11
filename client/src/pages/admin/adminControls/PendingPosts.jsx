@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPendingPosts, approvePost } from '../../../store/thunks/postThunk.js';
+import { getPendingPosts, approvePost, deletePost } from '../../../store/thunks/postThunk.js';
 import AdminPostsTable from "../../../components/post/AdminPostsTable.jsx";
 import { toast } from 'react-toastify';
 
@@ -22,12 +22,25 @@ const AdminPosts = () => {
         }
     };
 
+    const handleDelete = async (postId) => {
+        if (window.confirm('Are you sure you want to delete this post?')) {
+            try {
+                await dispatch(deletePost(postId)).unwrap();
+                toast.success('Post deleted successfully!');
+                dispatch(getPendingPosts()); // refresh list
+            } catch (err) {
+                toast.error(`Failed to delete post: ${err.message || err}`);
+            }
+        }
+    };
+
+
     return (
         <div className="p-6">
             <h1 className="text-2xl font-semibold mb-4">Pending Posts (Admin)</h1>
             {loading && <p>Loading...</p>}
             {error && <p className="text-red-500">{error.message || 'Something went wrong.'}</p>}
-            <AdminPostsTable posts={pendingPosts} onApprove={handleApprove} />
+            <AdminPostsTable posts={pendingPosts} onApprove={handleApprove} onDelete={handleDelete} />
         </div>
     );
 };

@@ -85,7 +85,7 @@ const updateClaimRequestStatus = async (req, res) => {
         if (!claimRequest) return res.status(404).json({ message: 'Claim request not found' });
 
         if (
-            claimRequest.post.postedBy.toString() !== req.user._id
+            claimRequest.post.postedBy.toString() !== req.user._id.toString()
         ) {
             return res.status(403).json({ message: 'Unauthorized' });
         }
